@@ -5,6 +5,7 @@ def merge_and_filter_members(active_file, expired_file, output_file)
   active = CSV.read(active_file, headers: true)
   expired = CSV.read(expired_file, headers: true)
 
+  #Dir.mkdir("filtered_processed") unless Dir.exist?("filtered_processed")
   # Merge into one file
   CSV.open(output_file, 'w') do |csv|
     csv << active.headers
@@ -17,7 +18,8 @@ def merge_and_filter_members(active_file, expired_file, output_file)
   keep_columns = ['Company Name', 'Membership Type', 'Status', 'Join Date', 'Business Type', 'City']
   
   # Filter CSV to keep only selected columns
-  CSV.open("filtered_#{output_file}", 'w') do |csv|
+  filtered_file = File.join("processed", "filtered_#{File.basename(output_file)}")
+  CSV.open(filtered_file, 'w') do |csv|
     csv << keep_columns
 
     members.each do |row|
@@ -26,7 +28,7 @@ def merge_and_filter_members(active_file, expired_file, output_file)
     end
   end
 
-  puts "merged and filtered members csv saved as 'filtered_#{output_file}'."
+  
 
 end
 

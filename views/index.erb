@@ -5,6 +5,11 @@
 </head>
 <body>
     <h1>Upload CSV Files</h1>
+    
+    <% if error %>
+      <p style="color: red;"><%= error %></p>
+    <% end %>
+
     <form action="/upload" method="post" enctype="multipart/form-data">
         <label>Active Members CSV:</label>
         <input type="file" name="active"><br><br>

@@ -13,10 +13,20 @@ Dir.mkdir(settings.uploads_folder) unless Dir.exist?(settings.uploads_folder)
 Dir.mkdir(settings.processed_folder) unless Dir.exist?(settings.processed_folder)
 
 get '/' do
-  erb :index  # Load the HTML form
+  erb :index, locals: { error: nil }  # Load the HTML form
 end
 
 post '/upload' do
+  # Check if all required files are uploaded
+  if !params[:active] || !params[:expired] || !params[:users]
+    return erb :index, locals: { error: "Please upload all three files before processing." }
+  end
+
+  # Debugging: Print out the filenames of uploaded files
+  puts "Active file: #{params[:active][:filename]}"
+  puts "Expired file: #{params[:expired][:filename]}"
+  puts "Users file: #{params[:users][:filename]}"
+
   # Save uploaded files
   ['active', 'expired', 'users'].each do |type|
     if params[type] && params[type][:tempfile]
@@ -25,18 +35,31 @@ post '/upload' do
     end
   end
 
-  # Define file paths
-  active_file = Dir.glob("#{settings.uploads_folder}/*active*.csv").first
-  expired_file = Dir.glob("#{settings.uploads_folder}/*expired*.csv").first
-  user_file = Dir.glob("#{settings.uploads_folder}/*users*.csv").first
-  members_output = "#{settings.processed_folder}/members.csv"
-  final_output = "#{settings.processed_folder}/final_output.csv"
+  # Define file paths for the uploaded files
+  active_file = File.join(settings.uploads_folder, params[:active][:filename])
+  expired_file = File.join(settings.uploads_folder, params[:expired][:filename])
+  user_file = File.join(settings.uploads_folder, params[:users][:filename])
+
+  # Define output file paths
+  members_output = File.join(settings.processed_folder, 'members.csv')
+  final_output = File.join(settings.processed_folder, 'final_output.csv')
 
   # Run processing steps
   merge_and_filter_members(active_file, expired_file, members_output)
   filter_users(user_file)
-  merge_users_and_members("filtered_#{user_file}", "filtered_#{members_output}", final_output)
+  merge_users_and_members("processed/filtered_#{File.basename(user_file)}", "processed/filtered_#{File.basename(members_output)}", final_output)
 
   # Provide a download link
   erb :download, locals: { file: final_output }
+end
+
+# Add this route below all other routes in `app.rb`
+get '/processed/:filename' do
+  file_path = File.join(settings.processed_folder, params[:filename])
+
+  if File.exist?(file_path)
+    send_file file_path, filename: params[:filename], type: 'application/csv'
+  else
+    halt 404, "File not found"
+  end
 end

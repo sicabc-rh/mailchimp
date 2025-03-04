@@ -5,7 +5,8 @@ def filter_users(user_file)
 
   keep_columns = ['FirstName', 'LastName', 'CompanyName', 'Email', 'Roles']
 
-  CSV.open("filtered_#{user_file}", 'w') do |csv|
+  filtered_file = File.join("processed", "filtered_#{File.basename(user_file)}")
+  CSV.open(filtered_file, 'w') do |csv|
     
     # Write the headers
     csv << keep_columns

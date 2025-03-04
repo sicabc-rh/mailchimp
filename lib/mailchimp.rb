@@ -10,8 +10,7 @@ def merge_users_and_members(user_file, member_file, output_file)
   # Define headers for output file
   headers = ['Email Address', 'First Name', 'Last Name', 'Company Name', 'Join Date', 'City', 'Membership Type', 'Business Type', 'Membership Status', 'Tags']
 
-  CSV.open(output_file, 'w') do |csv|
-    csv << headers
+  CSV.open(output_file, 'w', write_headers: true, headers: headers) do |csv|
 
     CSV.foreach(user_file, headers: true) do |row|
       company_name = row['CompanyName']
@@ -27,7 +26,7 @@ def merge_users_and_members(user_file, member_file, output_file)
           members[company_name]['City'],
           members[company_name]['Membership Type'],
           members[company_name]['Business Type'],
-          members[company_name]['Status'],
+          members[company_name]['Membership Status'],
           row['Roles']
         ]
         csv << merged_row

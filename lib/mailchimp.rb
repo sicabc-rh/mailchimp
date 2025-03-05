@@ -26,7 +26,7 @@ def merge_users_and_members(user_file, member_file, output_file)
           members[company_name]['City'],
           members[company_name]['Membership Type'],
           members[company_name]['Business Type'],
-          members[company_name]['Membership Status'],
+          members[company_name]['Status'],
           row['Roles']
         ]
         csv << merged_row

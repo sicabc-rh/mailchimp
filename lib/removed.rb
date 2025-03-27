@@ -21,8 +21,9 @@ def add_lines_to_final_output(final_output, old_file, updated_file)
     end
   end
 
-  # Append the rows from the old file to the final output
-  final_file_data += added_rows
+  added_rows.each do |row|
+    final_file_data << row
+  end
 
   # Write the modified data to the updated file
   CSV.open(updated_file, 'wb') do |csv|

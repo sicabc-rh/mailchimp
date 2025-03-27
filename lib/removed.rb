@@ -1,4 +1,6 @@
 # lib/removed.rb
+require 'csv'
+
 def add_lines_to_final_output(final_output, old_file, updated_file)
   # Open the final output file and the old file
   final_file_data = CSV.read(final_output, headers: true)

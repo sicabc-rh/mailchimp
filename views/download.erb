@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CSV Processed</title>
+    <title>MailChimp Contacts Formatter</title>
+    <style>
+        .download-button {
+            background-color: #5a9bd5; /* Light blue color */
+            color: white; /* Text color */
+            font-weight: bold; /* Make text bold */
+            padding: 12px 24px; /* Make button a little bigger */
+            font-size: 16px; /* Adjust font size */
+            border: none; /* Remove the border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease; /* Smooth color transition */
+        }
+
+        /* Submit button hover effect */
+        .download-button:hover {
+            background-color: #4c8cbf; /* Slightly darker blue when hovering */
+        }
+    </style>
 </head>
 <body>
     <h1>Processing Complete!</h1>
     <form action="/processed/<%= File.basename(file) %>" method="get">
-        <button type="submit">Download File</button>
+        <button type="submit" class="download_button">Download File</button>
     </form>
     
     <div>

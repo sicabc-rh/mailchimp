@@ -8,10 +8,14 @@ def add_lines_to_final_output(final_output, old_file, updated_file)
 
   # Get the email addresses from the final output and old file
   final_emails = final_file_data['Email Address']  # Assuming 'Email' is the column header for email addresses
+  old_data_cleaned = old_file_data.reject { |row| row['Tags'] == 'REMOVE' }
   added_rows = []
 
   # Iterate through the rows in the old file
-  old_file_data.each do |row|
+  old_data_cleaned.each do |row|
+    if row['Tags'] == 'REMOVE'
+      
+    end
     email = row['Email Address']  # Assuming 'Email' is the column header for email addresses
     
     # If the email from the old file is not found in the final output, add the row

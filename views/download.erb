@@ -5,7 +5,68 @@
 </head>
 <body>
     <h1>Processing Complete!</h1>
-    <p><a href="/processed/final_output.csv" download>Click here to download the final CSV</a></p>
+    <form action="/processed/<%= File.basename(file) %>" method="get">
+        <button type="submit">Download File</button>
+    </form>
     
+    <div>
+        <h2>MailChimp Instructions:</h2>
+        <ol>
+            <li>Click the button above to download your file.</li>
+            <li>Open <a href="https://login.mailchimp.com/login/post/">MailChimp</a> and login.</li>
+            <li>In the left hand menu, under "Audience", click "All contacts".</li>
+            <li>At the top of the page is a dropdown labelled "Contacts".
+                <ul>
+                    <li>Select the audience you are updating.</li>
+                </ul>
+            </li>
+            <li>To the right of the dropdown, click "Add contacts" -> "Import contacts".</li>
+            <li>"How would you like to add contacts?"
+                <ul><li>Upload a file.</li></ul>
+            </li>
+            <li>"Upload a file"
+                <ul><li>Drag & drop or browse to find the file you just downloaded.</li></ul>
+            </li>
+            <li>"Organize your contacts"
+                <ul>
+                    <li>Make sure the correct audience is selected.</li>
+                    <li>Check the box that says "Update any existing contacts".</li>
+                </ul>
+            </li>
+            <li>"Tag your contacts"
+                <ul><li>Skip this step (click continue).</li></ul>
+            </li>
+            <li>"Let's make sure your data transfers correctly."
+                <ul>
+                    <li>Check that all the boxes in the "Import" column are selected.</li>
+                    <li>Make sure all the "Mailchimp's field names" are correct (these are the column headers in the MailChimp contact list).</li>
+                </ul>
+            </li>
+            <li>"Subscribe contacts to marketing"
+                <ul><li>Select "Subscribed" from this dropdown.</li></ul>
+            </li>
+            <li>Click "Finalize import", and "Complete Import"</li>
+        </ol>
+        <h3>Notes:</h3>
+        <ul>
+            <li>Any contacts recently removed from XPR should now be tagged "REMOVE". These contacts should be archived:
+                <ol type="a">
+                    <li>Navigate to the audience.</li>
+                    <li>Select "Filter by tags" & choose the "REMOVE" tag.</li>
+                    <li>On the left side of the header row, click the checkbox to select all.</li>
+                    <li>Click "Archive", and follow the on-screen instructions.</li>
+                </ol>
+            </li>
+            <li>You will likely receive errors in your upload. 
+                <ol type="a">
+                    <li>Click the "View errors" button (in the email sent to you after your import completed or on the MailChimp site).</li>
+                    <li>Download the errors and make changes in XPR for invalid domains, invalid usernames, and missing "@".</li>
+                    <li>Syntax Errors are often blank and you may need to reach out to these people for an updated email address.</li>
+                    <li>Hard Bounced errors should likely be removed from XPR. Check with a contact from that company to see if the email is still valid.</li>
+                    <li>We can't do anything about Role-Based Errors or unsubscribes.</li>
+                </ol>
+            </li>
+        </ul>
+    </div>
 </body>
 </html>
